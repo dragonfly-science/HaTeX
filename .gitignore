@@ -25,5 +25,6 @@ bin/*
 *fuse_hidden*
 *.kate-swp
 .virthualenv
+*.swp
 
 junktest/*

@@ -27,6 +27,7 @@ import Data.Monoid (mconcat,mempty)
 --   the function from the "Text.PrettyPrint.Free" module.
 docLaTeX :: LaTeX -> Doc ()
 docLaTeX (TeXRaw t) = text $ unpack t
+docLaTeX (TeXAmp) = text $ "&"
 docLaTeX (TeXComm n as) = backslash <> text n <> align (mconcat (fmap docTeXArg as)) <> line
 docLaTeX (TeXCommS n) = backslash <> text n <> line
 docLaTeX (TeXEnv n as b) =

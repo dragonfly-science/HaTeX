@@ -73,6 +73,7 @@ latexParser = mconcat <$> latexBlockParser `manyTill` eof
 latexBlockParser :: Parser LaTeX
 latexBlockParser = foldr1 (<|>)
   [ text            <?> "text"
+  , amp             <?> "ampersand"
   , dolMath         <?> "inline math ($)"
   , comment         <?> "comment"
   , text2           <?> "text2"
@@ -90,8 +91,8 @@ text = do
   mbC <- peekChar
   case mbC of
     Nothing -> fail "text: Empty input."
-    Just c | c `elem` "$%\\{]}" -> fail "not text"
-           | otherwise          -> TeXRaw <$> takeTill (`elem` "$%\\{]}")
+    Just c | c `elem` "$%\\{]}&" -> fail "not text"
+           | otherwise           -> TeXRaw <$> takeTill (`elem` "$%\\{]}&")
 
 ------------------------------------------------------------------------
 -- Text without stopping on ']'
@@ -101,6 +102,15 @@ text2 = do
   _ <- char ']'
   t <- try (text <|> return (TeXRaw T.empty))
   return $ TeXRaw (T.pack "]") <> t
+
+------------------------------------------------------------------------
+-- Just an ampserand on its own
+------------------------------------------------------------------------
+
+amp :: Parser LaTeX
+amp = do
+    _ <- char '&'
+    return TeXAmp
 
 ------------------------------------------------------------------------
 -- Environment

@@ -60,6 +60,7 @@ data MathType = Parentheses | Square | Dollar
 -- | Type of @LaTeX@ blocks.
 data LaTeX =
    TeXRaw Text -- ^ Raw text.
+ | TeXAmp -- ^ Raw ampersand (&). Used in alignment of tables and equations.
  | TeXComm String [TeXArg] -- ^ Constructor for commands.
                            -- First argument is the name of the command.
                            -- Second, its arguments.

@@ -105,7 +105,9 @@ instance Render Measure where
 instance Render LaTeX where
   
   render (TeXRaw t) = t
-  
+
+  render TeXAmp = "&"
+
   render (TeXComm name []) = "\\" <> fromString name <> "{}"
   render (TeXComm name args) =
       "\\"
